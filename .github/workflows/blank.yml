@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>$SOLESTEP Signature</title>
+</head>
+<body>
+  <h2>Sign to Enter the Arena</h2>
+  <button id="signBtn">Sign Message</button>
+
+  <script type="module">
+    const signBtn = document.getElementById("signBtn");
+
+    signBtn.onclick = async () => {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          const provider = window.solana;
+          await provider.connect();
+
+          const message = "I hereby move with soul.";
+          const encodedMessage = new TextEncoder().encode(message);
+
+          const signed = await provider.signMessage(encodedMessage, "utf8");
+          alert("Signature complete. Welcome, warrior.");
+          console.log("Signature:", signed);
+          console.log("Wallet:", provider.publicKey.toString());
+        } catch (err) {
+          alert("Failed to sign message.");
+          console.error(err);
+        }
+      } else {
+        alert("Phantom wallet not detected.");
+      }
+    };
+  </script>
+</body>
+</html>
